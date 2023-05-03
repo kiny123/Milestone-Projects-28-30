@@ -11,6 +11,9 @@ class Game {
     
     var cards = [Card]()
     var indexOfOneAndOnlyFaceUpCard: Int?
+    var allCards = 6
+    
+    
     
     func chooseCard(at index: Int) {
         if !cards[index].isMatched {
@@ -28,16 +31,21 @@ class Game {
                 cards[index].isFaceUp = true
                 indexOfOneAndOnlyFaceUpCard = index
             }
+                        
         }
+        
+
         
     }
     
     init(numberOfPairsOfCards: Int) {
         for _ in 1...numberOfPairsOfCards {
             let card = Card()
-            cards.append(card)
-            cards.append(card)
+            cards += [card, card]
+            
         }
+        cards.shuffle()
+        
     }
     
 }

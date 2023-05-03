@@ -9,24 +9,32 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    lazy var game = Game(numberOfPairsOfCards: buttonCollection.count / 2)
+    lazy var game = Game(numberOfPairsOfCards: (buttonCollection.count + 1) / 2)
     
     @IBOutlet var buttonCollection: [UIButton]!
     var emojiCollection = ["🦊", "🐨", "🐯", "🐵", "🐷", "🐻‍❄️", "🐶", "🐹"]
     var emojiDictionary = [Int: String]()
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-
+        super .viewDidLoad()
+        
+        title = "Pairs"
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(rules))
     }
+    
+    @objc func rules() {
+        let ac = UIAlertController(title: "Rules", message: "You need to pair one of two cards and others", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .cancel))
+        present(ac, animated: true)
+    }
+    
     
     func emojiIdentifier(for card: Card) -> String {
         if emojiDictionary[card.identifier] == nil {
             let randomIndex = Int(arc4random_uniform(UInt32(emojiCollection.count)))
             emojiDictionary[card.identifier] = emojiCollection.remove(at: randomIndex)
-            
         }
-        
         return emojiDictionary[card.identifier] ?? "?"
     }
     
@@ -42,12 +50,11 @@ class ViewController: UIViewController {
                 button.setTitle("", for: .normal)
                 button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0) : #colorLiteral(red: 0.6666666865, green: 0.6666666865, blue: 0.6666666865, alpha: 1)
             }
+            
         }
     }
     
     func flipButton(emoji: String, button: UIButton) {
-        
-        
         if button.currentTitle == emoji {
             button.setTitle("", for: .normal)
             button.backgroundColor = #colorLiteral(red: 0.6666666865, green: 0.6666666865, blue: 0.6666666865, alpha: 1)
@@ -64,7 +71,16 @@ class ViewController: UIViewController {
         }
     }
     
-
-
+    func win() {
+        let ac = UIAlertController(title: "Win", message: "You win!", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Nice", style: .cancel))
+        present(ac, animated: true)
+        
+        
+        
+    }
+    
+    
+    
 }
 
